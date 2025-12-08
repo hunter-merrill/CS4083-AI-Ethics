@@ -16,31 +16,7 @@ def demographic_parity(data, majority, minority):
 
 
 def equal_opportunity(data, majority, minority):
-    try:
-        conf_matrix_1 = (
-            confusion_matrix(
-                data[(data["Ethnicity"] == majority)]["TrueDiagnosis"],
-                data[(data["Ethnicity"] == majority)]["PredictedDiagnosis"],
-            )
-            .ravel()
-            .tolist()
-        )
-        conf_matrix_2 = (
-            confusion_matrix(
-                data[(data["Ethnicity"] == minority)]["TrueDiagnosis"],
-                data[(data["Ethnicity"] == minority)]["PredictedDiagnosis"],
-            )
-            .ravel()
-            .tolist()
-        )
-
-    except:
-        return "Invalid"
-
-    return abs(
-        conf_matrix_1[3] / (conf_matrix_1[3] + conf_matrix_1[1])
-        - conf_matrix_2[3] / (conf_matrix_2[3] + conf_matrix_2[1])
-    )
+    return equalized_odds(data, majority, minority)[0]
 
 def equalized_odds(data, majority, minority):
     try:
