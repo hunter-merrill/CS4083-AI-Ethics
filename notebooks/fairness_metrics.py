@@ -17,8 +17,8 @@ def equalized_odds(data, majority, minority):
     fpr_maj = fp_maj/(fp_maj + tn_maj)
     fpr_min = fp_min/(fp_min + tn_min)
 
-    tpr_diff = abs(tpr_maj - tpr_min)
-    fpr_diff = abs(fpr_maj - fpr_min)
+    tpr_diff = tpr_min - tpr_maj
+    fpr_diff = fpr_min - fpr_maj
 
     return [tpr_diff, fpr_diff]
 
