@@ -42,6 +42,40 @@ def equal_opportunity(data, majority, minority):
         - conf_matrix_2[3] / (conf_matrix_2[3] + conf_matrix_2[1])
     )
 
+def equalized_odds(data, majority, minority):
+    try:
+        tn_maj, fp_maj, fn_maj, tp_maj = (
+            confusion_matrix(
+                data[(data["Ethnicity"] == majority)]["TrueDiagnosis"],
+                data[(data["Ethnicity"] == majority)]["PredictedDiagnosis"],
+                labels=[0,1]
+            )
+            .ravel()
+            .tolist()
+        )
+        tn_min, fp_min, fn_min, tp_min = (
+            confusion_matrix(
+                data[(data["Ethnicity"] == minority)]["TrueDiagnosis"],
+                data[(data["Ethnicity"] == minority)]["PredictedDiagnosis"],
+                labels=[0,1]
+            )
+            .ravel()
+            .tolist()
+        )
+
+        tpr_maj = tp_maj/(tp_maj + fn_maj)
+        tpr_min = tp_min/(tp_min + fn_min)
+        fpr_maj = fp_maj/(fp_maj + tn_maj)
+        fpr_min = fp_min/(fp_min + tn_min)
+
+        tpr_diff = tpr_min - tpr_maj
+        fpr_diff = fpr_min - fpr_maj
+
+    except:
+        return "Invalid"
+
+    return [tpr_diff, fpr_diff]
+
 
 def disparate_impact(data, majority, minority):
     try:
